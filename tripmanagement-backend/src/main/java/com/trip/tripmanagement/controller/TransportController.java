@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
 @RequestMapping("/api/transports")
 public class TransportController {
@@ -16,15 +17,24 @@ public class TransportController {
         this.transportRepository = transportRepository;
     }
 
-    // CREATE transport
     @PostMapping
-    public Transport createTransport(@RequestBody Transport transport) {
+    public Transport create(@RequestBody Transport transport) {
         return transportRepository.save(transport);
     }
 
-    // READ all transports
     @GetMapping
-    public List<Transport> getAllTransports() {
+    public List<Transport> getAll() {
         return transportRepository.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public Transport getById(@PathVariable Integer id) {
+        return transportRepository.findById(id).orElse(null);
+    }
+
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable Integer id) {
+        transportRepository.deleteById(id);
+        return "Transport deleted";
     }
 }

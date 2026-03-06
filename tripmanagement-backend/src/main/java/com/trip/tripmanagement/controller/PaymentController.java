@@ -16,15 +16,24 @@ public class PaymentController {
         this.paymentRepository = paymentRepository;
     }
 
-    // CREATE payment
     @PostMapping
-    public Payment createPayment(@RequestBody Payment payment) {
+    public Payment create(@RequestBody Payment payment) {
         return paymentRepository.save(payment);
     }
 
-    // READ all payments
     @GetMapping
-    public List<Payment> getAllPayments() {
+    public List<Payment> getAll() {
         return paymentRepository.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public Payment getById(@PathVariable Integer id) {
+        return paymentRepository.findById(id).orElse(null);
+    }
+
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable Integer id) {
+        paymentRepository.deleteById(id);
+        return "Payment deleted";
     }
 }

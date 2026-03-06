@@ -16,15 +16,24 @@ public class FoodController {
         this.foodRepository = foodRepository;
     }
 
-    // CREATE food
     @PostMapping
-    public Food createFood(@RequestBody Food food) {
+    public Food create(@RequestBody Food food) {
         return foodRepository.save(food);
     }
 
-    // READ all food entries
     @GetMapping
-    public List<Food> getAllFood() {
+    public List<Food> getAll() {
         return foodRepository.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public Food getById(@PathVariable Integer id) {
+        return foodRepository.findById(id).orElse(null);
+    }
+
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable Integer id) {
+        foodRepository.deleteById(id);
+        return "Food deleted";
     }
 }

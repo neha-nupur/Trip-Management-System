@@ -17,12 +17,25 @@ public class UserController {
     }
 
     @PostMapping
-    public User createUser(@RequestBody User user) {
+    public User create(@RequestBody User user) {
         return userRepository.save(user);
     }
 
     @GetMapping
-    public List<User> getAllUsers() {
+    public List<User> getAll() {
         return userRepository.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public User getById(@PathVariable Integer id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable Integer id) {
+
+        userRepository.deleteById(id);
+
+        return "User deleted";
     }
 }
