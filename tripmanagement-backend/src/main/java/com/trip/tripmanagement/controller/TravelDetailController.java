@@ -1,89 +1,55 @@
 package com.trip.tripmanagement.controller;
 
 import com.trip.tripmanagement.entity.TravelDetail;
-import com.trip.tripmanagement.repository.TravelDetailRepository;
+import com.trip.tripmanagement.service.TravelDetailService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/travel-details")
 public class TravelDetailController {
 
-    private final TravelDetailRepository travelDetailRepository;
+    private final TravelDetailService travelDetailService;
 
-    public TravelDetailController(TravelDetailRepository travelDetailRepository) {
-        this.travelDetailRepository = travelDetailRepository;
+    public TravelDetailController(TravelDetailService travelDetailService) {
+        this.travelDetailService = travelDetailService;
     }
 
+    // CREATE
     @PostMapping
     public TravelDetail create(@RequestBody TravelDetail travelDetail) {
-        return travelDetailRepository.save(travelDetail);
+        return travelDetailService.create(travelDetail);
     }
 
+    // GET ALL
     @GetMapping
     public List<TravelDetail> getAll() {
-        return travelDetailRepository.findAll();
+        return travelDetailService.getAll();
     }
 
+    // GET BY ID
     @GetMapping("/{id}")
     public TravelDetail getById(@PathVariable Integer id) {
-        return travelDetailRepository.findById(id).orElse(null);
+        return travelDetailService.getById(id);
     }
 
+    // UPDATE
     @PutMapping("/{id}")
     public TravelDetail update(@PathVariable Integer id, @RequestBody TravelDetail updatedTravelDetail) {
-
-        Optional<TravelDetail> optional = travelDetailRepository.findById(id);
-
-        if (optional.isPresent()) {
-
-            TravelDetail travelDetail = optional.get();
-
-            travelDetail.setTransportMode(updatedTravelDetail.getTransportMode());
-            travelDetail.setSourceCity(updatedTravelDetail.getSourceCity());
-            travelDetail.setTravelDurationHours(updatedTravelDetail.getTravelDurationHours());
-            travelDetail.setTravelNotes(updatedTravelDetail.getTravelNotes());
-
-            return travelDetailRepository.save(travelDetail);
-        }
-
-        return null;
+        return travelDetailService.update(id, updatedTravelDetail);
     }
 
+    // PATCH
     @PatchMapping("/{id}")
     public TravelDetail patch(@PathVariable Integer id, @RequestBody TravelDetail updatedTravelDetail) {
-
-        Optional<TravelDetail> optional = travelDetailRepository.findById(id);
-
-        if (optional.isPresent()) {
-
-            TravelDetail travelDetail = optional.get();
-
-            if (updatedTravelDetail.getTransportMode() != null)
-                travelDetail.setTransportMode(updatedTravelDetail.getTransportMode());
-
-            if (updatedTravelDetail.getSourceCity() != null)
-                travelDetail.setSourceCity(updatedTravelDetail.getSourceCity());
-
-            if (updatedTravelDetail.getTravelDurationHours() != null)
-                travelDetail.setTravelDurationHours(updatedTravelDetail.getTravelDurationHours());
-
-            if (updatedTravelDetail.getTravelNotes() != null)
-                travelDetail.setTravelNotes(updatedTravelDetail.getTravelNotes());
-
-            return travelDetailRepository.save(travelDetail);
-        }
-
-        return null;
+        return travelDetailService.patch(id, updatedTravelDetail);
     }
 
+    // DELETE
     @DeleteMapping("/{id}")
     public String delete(@PathVariable Integer id) {
-
-        travelDetailRepository.deleteById(id);
-
+        travelDetailService.delete(id);
         return "Travel Detail deleted successfully";
     }
 }

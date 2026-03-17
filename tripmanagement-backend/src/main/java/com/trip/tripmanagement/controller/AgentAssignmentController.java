@@ -1,61 +1,45 @@
 package com.trip.tripmanagement.controller;
 
 import com.trip.tripmanagement.entity.AgentAssignment;
-import com.trip.tripmanagement.repository.AgentAssignmentRepository;
+import com.trip.tripmanagement.service.AgentAssignmentService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/agentassignments")
 public class AgentAssignmentController {
 
-    private final AgentAssignmentRepository agentAssignmentRepository;
+    private final AgentAssignmentService agentAssignmentService;
 
-    public AgentAssignmentController(AgentAssignmentRepository agentAssignmentRepository) {
-        this.agentAssignmentRepository = agentAssignmentRepository;
+    public AgentAssignmentController(AgentAssignmentService agentAssignmentService) {
+        this.agentAssignmentService = agentAssignmentService;
     }
 
     @PostMapping
     public AgentAssignment create(@RequestBody AgentAssignment agentAssignment) {
-        return agentAssignmentRepository.save(agentAssignment);
+        return agentAssignmentService.create(agentAssignment);
     }
 
     @GetMapping
     public List<AgentAssignment> getAll() {
-        return agentAssignmentRepository.findAll();
+        return agentAssignmentService.getAll();
     }
 
     @GetMapping("/{id}")
     public AgentAssignment getById(@PathVariable Integer id) {
-        return agentAssignmentRepository.findById(id).orElse(null);
+        return agentAssignmentService.getById(id);
     }
 
     @PutMapping("/{id}")
     public AgentAssignment update(@PathVariable Integer id, @RequestBody AgentAssignment updatedAssignment) {
-
-        Optional<AgentAssignment> optionalAssignment = agentAssignmentRepository.findById(id);
-
-        if (optionalAssignment.isPresent()) {
-
-            AgentAssignment assignment = optionalAssignment.get();
-
-            assignment.setTripId(updatedAssignment.getTripId());
-            assignment.setAgentId(updatedAssignment.getAgentId());
-            assignment.setAssignedDate(updatedAssignment.getAssignedDate());
-
-            return agentAssignmentRepository.save(assignment);
-        }
-
-        return null;
+        return agentAssignmentService.update(id, updatedAssignment);
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable Integer id) {
 
-        agentAssignmentRepository.deleteById(id);
-
+        agentAssignmentService.delete(id);
         return "Assignment deleted successfully";
     }
 }

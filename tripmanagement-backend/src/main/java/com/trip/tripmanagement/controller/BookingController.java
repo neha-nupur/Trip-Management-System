@@ -1,6 +1,6 @@
 package com.trip.tripmanagement.controller;
 import com.trip.tripmanagement.entity.Booking;
-import com.trip.tripmanagement.repository.BookingRepository;
+import com.trip.tripmanagement.service.BookingService;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -11,73 +11,42 @@ import java.util.Optional;
 @RequestMapping("/api/bookings")
 public class BookingController {
 
-    private final BookingRepository bookingRepository;
+    private final BookingService bookingService;
 
-    public BookingController(BookingRepository bookingRepository) {
-        this.bookingRepository = bookingRepository;
+    public BookingController(BookingService bookingService) {
+        this.bookingService = bookingService;
     }
 
     @PostMapping
     public Booking create(@RequestBody Booking booking) {
-        return bookingRepository.save(booking);
+        return bookingService.create(booking);
     }
 
     @GetMapping
     public List<Booking> getAll() {
-        return bookingRepository.findAll();
+        return bookingService.getAll();
     }
 
     @GetMapping("/{id}")
     public Booking getById(@PathVariable Integer id) {
-        return bookingRepository.findById(id).orElse(null);
+        return bookingService.getById(id);
     }
 
     @PutMapping("/{id}")
     public Booking update(@PathVariable Integer id, @RequestBody Booking updatedBooking) {
-
-        Optional<Booking> optional = bookingRepository.findById(id);
-
-        if (optional.isPresent()) {
-
-            Booking booking = optional.get();
-
-            booking.setBookingStatus(updatedBooking.getBookingStatus());
-
-            return bookingRepository.save(booking);
-        }
-
-        return null;
+        return bookingService.update(id, updatedBooking);
     }
+
 
     @PatchMapping("/{id}")
     public Booking patch(@PathVariable Integer id, @RequestBody Booking updatedBooking) {
-
-        Optional<Booking> optional = bookingRepository.findById(id);
-
-        if(optional.isPresent()) {
-
-            Booking booking = optional.get();
-
-            if(updatedBooking.getBookingStatus() != null)
-                booking.setBookingStatus(updatedBooking.getBookingStatus());
-
-            if(updatedBooking.getBookingDate() != null)
-                booking.setBookingDate(updatedBooking.getBookingDate());
-
-            if(updatedBooking.getUser() != null)
-                booking.setUser(updatedBooking.getUser());
-
-            return bookingRepository.save(booking);
-        }
-
-        return null;
+        return bookingService.patch(id, updatedBooking);
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable Integer id) {
 
-        bookingRepository.deleteById(id);
-
+        bookingService.delete(id);
         return "Booking deleted";
     }
 }

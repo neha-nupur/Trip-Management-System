@@ -38,25 +38,13 @@ public class ExpenseController {
     // UPDATE
     @PutMapping("/{id}")
     public Expense update(@PathVariable Integer id, @RequestBody Expense updatedExpense) {
-
-        Optional<Expense> optional = expenseRepository.findById(id);
-
-        if(optional.isPresent()) {
-
-            Expense expense = optional.get();
-
-            expense.setTransportCost(updatedExpense.getTransportCost());
-            expense.setHotelCost(updatedExpense.getHotelCost());
-            expense.setFoodCost(updatedExpense.getFoodCost());
-            expense.setMiscellaneousCost(updatedExpense.getMiscellaneousCost());
-            expense.setTotalCost(updatedExpense.getTotalCost());
-
-            return expenseRepository.save(expense);
-        }
-
-        return null;
+        return expenseService.update(id, updatedExpense);
     }
 
+    @PatchMapping("/{id}")
+    public Expense patch(@PathVariable Integer id, @RequestBody Expense updatedExpense) {
+        return expenseService.patch(id, updatedExpense);
+    }
     // DELETE
     @DeleteMapping("/{id}")
     public String delete(@PathVariable Integer id) {

@@ -1,39 +1,55 @@
 package com.trip.tripmanagement.controller;
 
 import com.trip.tripmanagement.entity.Food;
-import com.trip.tripmanagement.repository.FoodRepository;
+import com.trip.tripmanagement.service.FoodService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/foods")
+@RequestMapping("/api/food")
 public class FoodController {
 
-    private final FoodRepository foodRepository;
+    private final FoodService foodService;
 
-    public FoodController(FoodRepository foodRepository) {
-        this.foodRepository = foodRepository;
+    public FoodController(FoodService foodService) {
+        this.foodService = foodService;
     }
 
+    // CREATE
     @PostMapping
     public Food create(@RequestBody Food food) {
-        return foodRepository.save(food);
+        return foodService.create(food);
     }
 
+    // GET ALL
     @GetMapping
     public List<Food> getAll() {
-        return foodRepository.findAll();
+        return foodService.getAll();
     }
 
+    // GET BY ID
     @GetMapping("/{id}")
     public Food getById(@PathVariable Integer id) {
-        return foodRepository.findById(id).orElse(null);
+        return foodService.getById(id);
     }
 
+    // UPDATE
+    @PutMapping("/{id}")
+    public Food update(@PathVariable Integer id, @RequestBody Food updatedFood) {
+        return foodService.update(id, updatedFood);
+    }
+
+    // PATCH
+    @PatchMapping("/{id}")
+    public Food patch(@PathVariable Integer id, @RequestBody Food updatedFood) {
+        return foodService.patch(id, updatedFood);
+    }
+
+    // DELETE
     @DeleteMapping("/{id}")
     public String delete(@PathVariable Integer id) {
-        foodRepository.deleteById(id);
-        return "Food deleted";
+        foodService.delete(id);
+        return "Food deleted successfully";
     }
 }

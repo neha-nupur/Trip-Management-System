@@ -1,7 +1,7 @@
 package com.trip.tripmanagement.controller;
 
 import com.trip.tripmanagement.entity.User;
-import com.trip.tripmanagement.repository.UserRepository;
+import com.trip.tripmanagement.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,32 +10,36 @@ import java.util.List;
 @RequestMapping("/api/users")
 public class UserController {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @PostMapping
     public User create(@RequestBody User user) {
-        return userRepository.save(user);
+        return userService.create(user);
     }
 
     @GetMapping
     public List<User> getAll() {
-        return userRepository.findAll();
+        return userService.getAll();
     }
 
     @GetMapping("/{id}")
     public User getById(@PathVariable Integer id) {
-        return userRepository.findById(id).orElse(null);
+        return userService.getById(id);
+    }
+
+    @PutMapping("/{id}")
+    public User update(@PathVariable Integer id, @RequestBody User updatedUser) {
+        return userService.update(id, updatedUser);
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable Integer id) {
 
-        userRepository.deleteById(id);
-
+        userService.delete(id);
         return "User deleted";
     }
 }
