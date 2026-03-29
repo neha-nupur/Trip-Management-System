@@ -1,0 +1,68 @@
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e') no-repeat center center fixed;
+  background-size: cover;
+}
+
+.signup-page {
+  display: flex;              /* enable flexbox */
+  justify-content: center;    /* center horizontally */
+  align-items: center;        /* center vertically */
+  height: 100vh;              /* full viewport height */
+}
+
+.signup-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.signup-card {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 40px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  max-width: 400px;
+  width: 100%;
+}
+
+.signup-card h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.signup-card input,
+.signup-card select {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.signup-card button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background-color: #4caf50;
+  color: white;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.signup-card button:hover {
+  background-color: #45a049;
+}
+
+.signup-card a {
+  color: #2196f3;
+  text-decoration: none;
+}
+
+.signup-card a:hover {
+  text-decoration: underline;
+}
